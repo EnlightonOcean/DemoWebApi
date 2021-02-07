@@ -23,27 +23,27 @@ export class NavComponent implements OnInit {
       this.router.navigateByUrl('/members');
       console.log(x);
       }
-
-    },
-    error => {
-      // console.log(1);
-     // console.log(error);
-      if (error.error.errors){
-        if (error.error.errors.Password && error.error.errors.UserName)
-        {
-          this.toastr.error(error.error.errors.UserName[0] + '\n' + error.error.errors.Password[0]);
-        }
-        else if (error.error.errors.Password){
-          this.toastr.error(error.error.errors.Password[0]);
-        }
-        else if (error.error.errors.UserName){
-          this.toastr.error(error.error.errors.UserName[0]);
-        }
-      }
-      else{
-        this.toastr.error(error.error);
-      }
-    });
+    }
+    // , error => {
+    //   // console.log(1);
+    //  // console.log(error);
+    //   if (error.error.errors){
+    //     if (error.error.errors.Password && error.error.errors.UserName)
+    //     {
+    //       this.toastr.error(error.error.errors.UserName[0] + '\n' + error.error.errors.Password[0]);
+    //     }
+    //     else if (error.error.errors.Password){
+    //       this.toastr.error(error.error.errors.Password[0]);
+    //     }
+    //     else if (error.error.errors.UserName){
+    //       this.toastr.error(error.error.errors.UserName[0]);
+    //     }
+    //   }
+    //   else{
+    //     this.toastr.error(error.error);
+    //   }
+    // }
+    );
   }
 
   logout(): void {

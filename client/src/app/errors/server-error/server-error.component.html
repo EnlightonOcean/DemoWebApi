@@ -1,0 +1,7 @@
+<h4>Internal Server Error</h4>
+<ng-container *ngIf="er">
+    <button class="btn btn-info btn-lg" routerLink="/" style="text-align: right;">Return to home page</button>
+    <h5 class='text-danger'>Error: {{er.message}}</h5>
+    <code class="mt-5" style="background-color: whitesmoke;">Error Details: {{er.details}}</code>
+</ng-container>
+
