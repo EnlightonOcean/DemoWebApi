@@ -1,0 +1,31 @@
+<form [formGroup]="registerForm" (ngSubmit)="registerForm.valid &&  register()">
+    <h2 class="text-center text-primary">Sign up</h2>
+    <hr>
+    <div class="form-group">
+        <label class="control-label" style="margin-right: 10px">I am a:</label>
+        <label class="radio-inline">
+            <input type="radio" value="male" formControlName="gender">Male
+            <input type="radio" value="female" formControlName="gender" class="ml-3">Female
+        </label>            
+    </div>
+    <app-text-input [formControl]="getControl('userName')" [label]='"Username"'></app-text-input>
+    <app-text-input [formControl]="getControl('knownAs')" [label]='"Known As"'></app-text-input>
+    <app-date-input [formControl]="getControl('dateOfBirth')" [label]='"Date Of Birth"' [maxDate]="maxDate"></app-date-input>
+    <app-text-input [formControl]="getControl('city')" [label]='"City"'></app-text-input>
+    <app-text-input [formControl]="getControl('country')" [label]='"Country"'></app-text-input>
+    <app-text-input [formControl]="getControl('password')" [label]="'Password'" [type]="'password'"></app-text-input>
+    <app-text-input [formControl]="getControl('confirmPassword')" [label]="'Confirm Password'" [type]="'password'"></app-text-input>
+    <div class="row" *ngIf="validationErrors.length>0">
+        <ul class="text-danger">
+            <li *ngFor="let error of validationErrors">
+                {{error}}
+            </li>
+        </ul>
+    </div>
+    <div class="form-group text-right">
+        <button [disabled]='!registerForm.valid' class="btn btn-outline-success mr-2" type="submit">Register</button>
+        <button class="btn btn-outline-danger" (click)="cancel()" type="button">Cancel</button>
+    </div>
+</form>
+<p>Form value: {{registerForm.value | json}}</p>
+<p>Form status: {{registerForm.status | json}}</p>
