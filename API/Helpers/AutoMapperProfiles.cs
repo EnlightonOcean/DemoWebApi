@@ -17,10 +17,11 @@ namespace API.Helpers
             CreateMap<MemberUpdateDTO,AppUser>();
             CreateMap<RegisterDto,AppUser>();
             CreateMap<Message,MessageDto>()
-            .ForMember(x => x.SenderPhotoUrl,
+                .ForMember(x => x.SenderPhotoUrl,
                         opt => opt.MapFrom( u => u.Sender.Photos.FirstOrDefault(x => x.IsMain).Url))
-            .ForMember(x => x.RecipientPhotoUrl,
+                .ForMember(x => x.RecipientPhotoUrl,
                         opt => opt.MapFrom( t => t.Recipient.Photos.FirstOrDefault(x => x.IsMain).Url));
+            CreateMap<DateTime,DateTime>().ConvertUsing(x => DateTime.SpecifyKind(x , DateTimeKind.Utc));
         }
     }
 }
