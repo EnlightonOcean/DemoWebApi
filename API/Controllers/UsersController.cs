@@ -44,7 +44,7 @@ namespace API.Controllers
         public async Task<ActionResult<MemberDto>> GetUser(string username)
         {
             //return Ok(_mapper.Map<MemberDto>(await _unitOfWork.UserRepository.GetUserByUsernameAsync(username)));
-            return await _unitOfWork.UserRepository.GetMemberAsync(username);
+            return await _unitOfWork.UserRepository.GetMemberAsync(username,isCurrentUser: username == User.GetUserName());
 
         }
 
@@ -77,7 +77,7 @@ namespace API.Controllers
                 Url = result.SecureUrl.AbsoluteUri,
                 PublicId = result.PublicId
             };
-            if(user.Photos.Count == 0) photo.IsMain = true;
+            //if(user.Photos.Count == 0) photo.IsMain = true;
             user.Photos.Add(photo);
             if(await _unitOfWork.Complete()) {
                 //return _mapper.Map<PhotoDto>(photo);
@@ -101,7 +101,8 @@ namespace API.Controllers
 
         [HttpDelete("delete-photo/{photoId}")]
         public async Task<ActionResult> DeletePhoto(int photoId){
-            var user = await _unitOfWork.UserRepository.GetUserByUsernameAsync(User.GetUserName());
+            //var user = await _unitOfWork.UserRepository.GetUserByUsernameAsync(User.GetUserName());
+            var user = await _unitOfWork.UserRepository.GetUserByPhotoId(photoId);
             var photo = user.Photos.FirstOrDefault(x => x.Id == photoId);
             if (photo == null) return NotFound();
             if (photo.IsMain) return BadRequest("Main photo cannot be deleted");

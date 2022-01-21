@@ -34,12 +34,13 @@ namespace API.Data
             userParams.PageNumber,userParams.PageSize);
         } 
 
-        public async Task<MemberDto> GetMemberAsync(string username)
+        public async Task<MemberDto> GetMemberAsync(string username, bool isCurrentUser)
         {
-            return await _context.Users
+            var query = _context.Users
                     .Where(x => x.UserName == username)
-                    .ProjectTo<MemberDto>(_mapper.ConfigurationProvider)
-                    .SingleOrDefaultAsync();
+                    .ProjectTo<MemberDto>(_mapper.ConfigurationProvider).AsQueryable();
+            if(isCurrentUser) query = query.IgnoreQueryFilters();
+            return await query.SingleOrDefaultAsync();
         }
 
         public async Task<AppUser> GetUserByIdAsync(int Id)
@@ -52,6 +53,14 @@ namespace API.Data
             return await _context.Users
             .Include(x => x.Photos)
             .SingleOrDefaultAsync(x => x.UserName == username);
+        }
+
+        public async Task<AppUser> GetUserByPhotoId(int photoId)
+        {
+            return await _context.Users
+                .Include(x=>x.Photos)
+                .IgnoreQueryFilters()
+                .SingleOrDefaultAsync( x => x.Photos.Any(x => x.Id == photoId));
         }
 
         public async Task<IEnumerable<AppUser>> GetUsersAsync()
@@ -75,5 +84,6 @@ namespace API.Data
         {
             return await _context.Users.Where( x => x.UserName == username).Select(x => x.Gender).SingleOrDefaultAsync();
         }
+
     }
 }

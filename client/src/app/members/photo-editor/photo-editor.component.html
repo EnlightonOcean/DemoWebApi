@@ -1,13 +1,18 @@
 <div class="row" *ngIf="member">
-    <div class="col-2" *ngFor="let photo of member.photos">
-        <img src="{{photo.url}}" alt="{{member.knownAs}}" class="img-thumbnail p-1">
+    <div class="col-2 img-wrapper" *ngFor="let photo of member.photos">
+        <img src="{{photo.url}}" alt="{{member.knownAs}}" class="img-thumbnail p-1" [class.not-approved]="!photo.isApproved">
+        <div class="text-center img-text" *ngIf="!photo.isApproved">
+          <span class="text-danger">Awaiting approval</span>
+        </div>
         <div class="text-center">
             <button class="btn btn-sm"
-            [disabled]="photo.isMain"
+            title="setMainPhoto"
+            type="button"
+            [disabled]="photo.isMain || !photo.isApproved"
             (click)="setMainPhoto(photo)"
             [ngClass]='photo.isMain? "btn-success active" : "btn-outline-success"'
             >Main</button>
-            <button class="btn btn-sm btn-danger" [disabled]="photo.isMain" (click)="deletePhoto(photo)"><i class="fa fa-trash"></i></button>
+            <button title="deletePhoto" type="button" class="btn btn-sm btn-danger" [disabled]="photo.isMain" (click)="deletePhoto(photo)"><i class="fa fa-trash"></i></button>
         </div>
     </div>
 </div>
@@ -24,10 +29,10 @@
     </div>
 
     Multiple
-    <input type="file" ng2FileSelect [uploader]="uploader" multiple /><br />
+    <input title="MultiFileUpload" type="file" ng2FileSelect [uploader]="uploader" multiple /><br />
 
     Single
-    <input type="file" ng2FileSelect [uploader]="uploader" />
+    <input title="SingleFileUpload" type="file" ng2FileSelect [uploader]="uploader" />
   </div>
 
   <div class="col-md-9" style="margin-bottom: 40px" *ngIf="uploader?.queue?.length">
@@ -51,7 +56,7 @@
           <td *ngIf="uploader.options.isHTML5" nowrap>{{ item?.file?.size/1024/1024 | number:'.2' }} MB</td>
           <td *ngIf="uploader.options.isHTML5">
             <div class="progress" style="margin-bottom: 0;">
-              <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': item.progress + '%' }"></div>
+              <div title="itemprogressbar" class="progress-bar" role="progressbar" [ngStyle]="{ 'width': item.progress + '%' }"></div>
             </div>
           </td>
           <!-- <td class="text-center">
@@ -79,7 +84,7 @@
       <div>
         Queue progress:
         <div class="progress" >
-          <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
+          <div title="progressbar" class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
         </div>
       </div>
       <button type="button" class="btn btn-success btn-s" (click)="uploader.uploadAll()"
