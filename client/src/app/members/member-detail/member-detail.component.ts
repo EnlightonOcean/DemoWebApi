@@ -4,10 +4,10 @@ import { NgxGalleryAnimation, NgxGalleryImage, NgxGalleryOptions } from '@kolkov
 import { TabDirective, TabsetComponent } from 'ngx-bootstrap/tabs';
 import { take } from 'rxjs/operators';
 import { Member } from 'src/app/_models/member';
-import { Message } from 'src/app/_models/message';
+//import { Message } from 'src/app/_models/message';
 import { User } from 'src/app/_models/user';
 import { AccountService } from 'src/app/_services/account.service';
-import { MembersService } from 'src/app/_services/members.service';
+//import { MembersService } from 'src/app/_services/members.service';
 import { MessageService } from 'src/app/_services/message.service';
 import { PresenceService } from 'src/app/_services/presence.service';
 
@@ -22,7 +22,7 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
   galleryOptions?: NgxGalleryOptions[];
   galleryImages?: NgxGalleryImage[];
   activeTab!: TabDirective;
-  messages: Message[] = [];
+  //messages: Message[] = [];
   onlineUsers!: string[];
   user!: User;
 
@@ -41,6 +41,7 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void 
   {
+    //this.messageService.messageThread$.subscribe(x => this.messages =x);
       this.presence.onlineUsers$.subscribe(x => {
       this.onlineUsers = x;
     })
@@ -50,6 +51,14 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
     });
     this.route.queryParams.subscribe(p => {
       p.tab ? this.selectTab(p.tab) : this.selectTab('About ' + this.member.knownAs);
+      if(p.tab === "Messages")
+      {
+        this.messageService.createHubConnection(this.user, this.member.username);
+      }
+      else
+      {
+        this.messageService.stopHubConnection();
+      }
     });
     this.galleryOptions = [
       {
@@ -91,10 +100,10 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
   // }
 
   selectTab(tabName: string): void{
-    this.router.navigate([], {
-        relativeTo: this.route,
-        queryParams: { tab: tabName }
-    });
+    // this.router.navigate([], {
+    //     relativeTo: this.route,
+    //     queryParams: { tab: tabName }
+    // });
     this.memberTabs.tabs.forEach(el => {
       if (el.heading === tabName){
         el.active = true;
@@ -104,17 +113,18 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
 
   onTabActivated(d: TabDirective): void {
     this.activeTab = d;
-    if (this.activeTab.heading === 'Messages' && this.messages.length === 0) {
-      // this.loadMessages();
-      this.messageService.createHubConnection(this.user, this.member.username);
-    }
-    else{
-      this.messageService.stopHubConnection();
-    }
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: { tab: this.activeTab.heading }
   });
+    // if (this.activeTab.heading === 'Messages' && this.messages.length === 0) {
+    //   // this.loadMessages();
+    //   this.messageService.createHubConnection(this.user, this.member.username);
+    // }
+    // else{
+    //   this.messageService.stopHubConnection();
+    // }
+    
   }
 
 }
