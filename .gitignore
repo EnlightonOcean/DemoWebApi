@@ -458,3 +458,5 @@ client/ssl/server.crt
 client/ssl/server.key
 API/datingapp.db-shm
 API/datingapp.db-wal
+API/wwwroot
+API/datingapp.db
