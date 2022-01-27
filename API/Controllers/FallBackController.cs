@@ -1,14 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
+namespace API.Controllers;
 
-namespace API.Controllers
+public class FallBackController : Controller
 {
-    public class FallBackController : Controller
+    public ActionResult Index()
     {
-        public ActionResult Index()
-        {
-            return PhysicalFile(Path.Combine(Directory.GetCurrentDirectory(),
-                "wwwroot","index.html"),"text/HTML");
-        }
-
+        return PhysicalFile(Path.Combine(Directory.GetCurrentDirectory(),
+            "wwwroot", "index.html"), "text/HTML");
     }
+
 }
