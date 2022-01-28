@@ -28,16 +28,18 @@ export class ConfirmService {
 
   private getResult(){
     return (observer: { next: (arg0: any) => void; complete: () => void; }) => {
-      const subscription = this.bsmodalRef?.onHidden.subscribe( () => {
+      const subscription = this.bsmodalRef?.onHidden?.subscribe( () => {
         observer.next(this.bsmodalRef?.content.result);
         observer.complete();
       });
+    
       
       return {
         unsubscribe(){
           subscription?.unsubscribe();
         }
       };
+    
     }
   }
 }

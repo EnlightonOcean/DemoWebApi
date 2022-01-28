@@ -55,7 +55,9 @@ export class AccountService {
 
   logout(): void{
     localStorage.removeItem('user');
-    this.currentUserSource.next(undefined);
+    //this.currentUserSource.next(null);
+    this.currentUserSource = new ReplaySubject<User>(1)
+    this.currentUser$ = this.currentUserSource.asObservable();
     this.presence.stopHubConnection();
   }
 

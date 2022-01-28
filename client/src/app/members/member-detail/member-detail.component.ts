@@ -49,6 +49,7 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
     this.route.data.subscribe(x => {
       this.member = x.member;
     });
+        
     this.route.queryParams.subscribe(p => {
       p.tab ? this.selectTab(p.tab) : this.selectTab('About ' + this.member.knownAs);
       if(p.tab === "Messages")
@@ -60,6 +61,7 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
         this.messageService.stopHubConnection();
       }
     });
+
     this.galleryOptions = [
       {
         width: '500px',
@@ -70,6 +72,7 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
       }
     ];
     this.galleryImages = this.getImages();
+
   }
 
   getImages(): NgxGalleryImage[] {
